@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="square_size">18dp</dimen>
+    <dimen name="square_radius">4dp</dimen>
+
+</resources>
