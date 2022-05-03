@@ -1,8 +1,9 @@
 package ua.tonkoshkur.tetris.viewmodel;
 
-import static ua.tonkoshkur.tetris.utils.Constants.PAUSE_BETWEEN_MOVEMENTS;
-import static ua.tonkoshkur.tetris.utils.Constants.PAUSE_BETWEEN_QUICK_MOVEMENTS;
+import static ua.tonkoshkur.tetris.utils.Constants.MOVEMENT_PERIOD;
+import static ua.tonkoshkur.tetris.utils.Constants.QUICK_MOVEMENT_PERIOD;
 import static ua.tonkoshkur.tetris.utils.Constants.SPEED_INCREASING_STEP;
+import static ua.tonkoshkur.tetris.utils.Constants.START_GAME_DELAY;
 
 import android.app.Application;
 
@@ -10,14 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class GameViewModel extends AndroidViewModel {
 
-    private final MutableLiveData<PuzzleAction> puzzleActionLiveData = new MutableLiveData<>(PuzzleAction.HOLD);
-    private GameStatus gameStatus = GameStatus.WAITING;
-    private long pauseBetweenMovements = PAUSE_BETWEEN_MOVEMENTS;
-    private boolean isMoveQuickly = false;
+    private final String TAG = GameViewModel.class.getSimpleName();
+    private final MutableLiveData<Action> actionLiveData;
+    private final MutableLiveData<GameStatus> gameStatusLiveData;
+    private long movementPeriod;
+    private Timer timer;
 
-    public enum PuzzleAction {
+    public enum Action {
         HOLD,
         MOVE_LEFT,
         MOVE_RIGHT,
@@ -35,78 +40,104 @@ public class GameViewModel extends AndroidViewModel {
 
     public GameViewModel(@NonNull Application application) {
         super(application);
+        this.actionLiveData = new MutableLiveData<>(Action.HOLD);
+        this.gameStatusLiveData = new MutableLiveData<>(GameStatus.WAITING);
     }
 
-    public MutableLiveData<PuzzleAction> getActionLiveData() {
-        return puzzleActionLiveData;
+    public MutableLiveData<Action> getActionLiveData() {
+        return actionLiveData;
+    }
+
+    public MutableLiveData<GameStatus> getGameStatusLiveData() {
+        return gameStatusLiveData;
     }
 
     public void startGame() {
-        new Thread(() -> {
-            try {
-                Thread.sleep(1000L);
-                run();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        gameStatusLiveData.setValue(GameStatus.RUNNING);
+        movementPeriod = MOVEMENT_PERIOD;
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new MovementTimerTask(), START_GAME_DELAY, movementPeriod);
     }
 
     public void endGame() {
-        gameStatus = GameStatus.FINISHED;
-        puzzleActionLiveData.postValue(PuzzleAction.HOLD);
-        pauseBetweenMovements = PAUSE_BETWEEN_MOVEMENTS;
+        resetTimer();
+        gameStatusLiveData.postValue(GameStatus.FINISHED);
+        actionLiveData.postValue(Action.HOLD);
     }
 
-    public void moveToLeft() {
-        puzzleActionLiveData.postValue(PuzzleAction.MOVE_LEFT);
+    public void moveLeft() {
+        actionLiveData.postValue(Action.MOVE_LEFT);
     }
 
-    public void moveToRight() {
-        puzzleActionLiveData.postValue(PuzzleAction.MOVE_RIGHT);
-    }
-
-    public void turnOnQuickMoving() {
-        isMoveQuickly = true;
-    }
-
-    public void turnOffQuickMoving() {
-        isMoveQuickly = false;
-    }
-
-    public void increaseSpeedPermanent() {
-        pauseBetweenMovements -= SPEED_INCREASING_STEP;
+    public void moveRight() {
+        actionLiveData.postValue(Action.MOVE_RIGHT);
     }
 
     public void rotateToLeft() {
-        puzzleActionLiveData.postValue(PuzzleAction.ROTATE_LEFT);
+        actionLiveData.postValue(Action.ROTATE_LEFT);
     }
 
     public void rotateToRight() {
-        puzzleActionLiveData.postValue(PuzzleAction.ROTATE_RIGHT);
+        actionLiveData.postValue(Action.ROTATE_RIGHT);
+    }
+
+    public void turnOnQuickMoving() {
+        if (isRunning()) {
+            resetTimer();
+            timer.schedule(new MovementTimerTask(), 0, QUICK_MOVEMENT_PERIOD);
+        }
+    }
+
+    public void turnOffQuickMoving() {
+        resetTimer();
+        timer.schedule(new MovementTimerTask(), 0, movementPeriod);
+    }
+
+    public void increaseSpeedPermanent() {
+        movementPeriod -= SPEED_INCREASING_STEP;
+        resetTimer();
+        timer.schedule(new MovementTimerTask(), 0, movementPeriod);
     }
 
     public void pause() {
-        gameStatus = GameStatus.PAUSED;
+        if (isRunning()) {
+            resetTimer();
+            gameStatusLiveData.postValue(GameStatus.PAUSED);
+        }
     }
 
     public void resume() {
-        gameStatus = GameStatus.RUNNING;
+        if (isPaused()) {
+            resetTimer();
+            timer.schedule(new MovementTimerTask(), START_GAME_DELAY, movementPeriod);
+            gameStatusLiveData.postValue(GameStatus.RUNNING);
+        }
     }
 
-    private void run() throws InterruptedException {
-        gameStatus = GameStatus.RUNNING;
-        while (!gameStatus.equals(GameStatus.FINISHED)) {
-            while (gameStatus.equals(GameStatus.PAUSED)) {
-                Thread.sleep(500);
-            }
+    public boolean isRunning() {
+        GameViewModel.GameStatus gameStatus = gameStatusLiveData.getValue();
+        return gameStatus != null
+                && gameStatus.equals(GameStatus.RUNNING);
+    }
 
-            puzzleActionLiveData.postValue(PuzzleAction.MOVE_BOTTOM);
-            if (isMoveQuickly) {
-                Thread.sleep(PAUSE_BETWEEN_QUICK_MOVEMENTS);
-            } else {
-                Thread.sleep(pauseBetweenMovements);
-            }
+    public boolean isPaused() {
+        GameViewModel.GameStatus gameStatus = gameStatusLiveData.getValue();
+        return gameStatus != null
+                && gameStatus.equals(GameStatus.PAUSED);
+    }
+
+    private void resetTimer() {
+        if (timer != null) {
+            timer.cancel();
+        }
+        timer = new Timer();
+    }
+
+    private class MovementTimerTask extends TimerTask {
+
+        @Override
+        public void run() {
+            actionLiveData.postValue(Action.MOVE_BOTTOM);
         }
     }
 

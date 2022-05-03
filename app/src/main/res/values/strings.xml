@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">tetris</string>
-    <string name="quit_dialog_message">Quit?</string>
+    <string name="end_game_question">End game?</string>
+    <string name="quit_question">Quit?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="start">Start</string>

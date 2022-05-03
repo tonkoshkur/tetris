@@ -1,16 +1,15 @@
 package ua.tonkoshkur.tetris.ui.fragment;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.ViewModelProvider;
 
 import ua.tonkoshkur.tetris.R;
 import ua.tonkoshkur.tetris.databinding.FragmentStartBinding;
@@ -34,6 +33,7 @@ public class StartFragment extends BaseFragment implements View.OnClickListener 
     @Override
     public void onStart() {
         super.onStart();
+        setOnBackPressedCallback();
         mViewModel = new ViewModelProvider(this).get(StartViewModel.class);
     }
 
@@ -53,5 +53,25 @@ public class StartFragment extends BaseFragment implements View.OnClickListener 
                 mNavController.navigate(R.id.action_startFragment_to_gameFragment);
                 break;
         }
+    }
+
+    private void setOnBackPressedCallback() {
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                showQuitDialog();
+            }
+        });
+    }
+
+    private void showQuitDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setIcon(android.R.drawable.stat_sys_warning)
+                .setMessage(R.string.quit_question)
+                .setCancelable(false)
+                .setPositiveButton(R.string.yes, (dialog, which) -> requireActivity().finish())
+                .setNegativeButton(R.string.no, (dialog, id) -> dialog.dismiss());
+        builder.create()
+                .show();
     }
 }
