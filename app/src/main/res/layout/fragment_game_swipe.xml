@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/default_padding"
+    tools:context=".ui.fragment.GameSwipeFragment">
+
+    <FrameLayout
+        android:id="@+id/next_block_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/pause_tgl_btn"
+        app:layout_constraintEnd_toStartOf="@id/pause_tgl_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/pause_tgl_btn" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="@id/pause_tgl_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/pause_tgl_btn"
+        app:layout_constraintTop_toTopOf="@id/pause_tgl_btn" />
+
+    <ToggleButton
+        android:id="@+id/pause_tgl_btn"
+        style="@style/ImageToggleButton"
+        android:background="@drawable/bg_play_stop_btn_toggle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ua.tonkoshkur.tetris.ui.view.ScreenView
+        android:id="@+id/screen"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pause_tgl_btn" />
+
+    <View
+        android:id="@+id/touch_zone"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pause_tgl_btn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

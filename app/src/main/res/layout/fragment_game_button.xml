@@ -4,24 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimaryVariant"
-    android:padding="10dp"
-    tools:context=".ui.fragment.GameFragment">
+    android:paddingVertical="@dimen/default_padding"
+    tools:context=".ui.fragment.GameButtonFragment">
 
-    <View
-        android:id="@+id/boarding"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/gamepad"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ua.tonkoshkur.tetris.ui.view.ScreenView
         android:id="@+id/screen"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="?attr/colorOnPrimary"
         app:layout_constraintBottom_toTopOf="@id/gamepad"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,31 +20,26 @@
         android:id="@+id/gamepad"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/screen">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <FrameLayout
             android:id="@+id/next_block_screen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/colorOnPrimary"
             app:layout_constraintBottom_toTopOf="@id/down_btn"
             app:layout_constraintEnd_toStartOf="@id/pause_tgl_btn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
         <ToggleButton
             android:id="@+id/pause_tgl_btn"
-            style="@style/GameButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorOnPrimary"
-            android:textOff="@string/resume"
-            android:textOn="@string/pause"
-            app:layout_constraintBottom_toTopOf="@id/rotate_right_btn"
+            style="@style/ImageToggleButton"
+            android:background="@drawable/bg_play_stop_btn_toggle"
+            app:layout_constraintBottom_toTopOf="@id/left_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -64,8 +48,7 @@
             android:id="@+id/score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:textColor="?attr/colorOnPrimary"
+            android:textColor="?attr/colorPrimary"
             android:textSize="32sp"
             app:layout_constraintBottom_toTopOf="@id/rotate_right_btn"
             app:layout_constraintEnd_toEndOf="parent"
@@ -74,8 +57,8 @@
 
         <ImageButton
             android:id="@+id/left_btn"
-            style="@style/GameButton"
-            android:layout_width="wrap_content"
+            style="@style/GameImageButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_chevron_left_24"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -84,8 +67,8 @@
 
         <ImageButton
             android:id="@+id/right_btn"
-            style="@style/GameButton"
-            android:layout_width="wrap_content"
+            style="@style/GameImageButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_chevron_right_24"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -94,8 +77,8 @@
 
         <ImageButton
             android:id="@+id/down_btn"
-            style="@style/GameButton"
-            android:layout_width="wrap_content"
+            style="@style/GameImageButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_arrow_downward_24"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -104,8 +87,8 @@
 
         <ImageButton
             android:id="@+id/rotate_right_btn"
-            style="@style/GameButton"
-            android:layout_width="wrap_content"
+            style="@style/GameImageButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_rotate_right_24"
             app:layout_constraintBottom_toBottomOf="parent"

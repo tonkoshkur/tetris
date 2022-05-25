@@ -13,4 +13,9 @@ public class BlockL extends FourSquareWidthBlock {
                 },
                 squareSize);
     }
+
+    @Override
+    public BlockShape getBlockShape() {
+        return BlockShape.L;
+    }
 }

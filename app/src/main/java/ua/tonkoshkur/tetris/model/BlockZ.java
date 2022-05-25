@@ -13,4 +13,9 @@ public class BlockZ extends ThreeSquareWidthBlock {
                 },
                 squareSize);
     }
+
+    @Override
+    public BlockShape getBlockShape() {
+        return BlockShape.Z;
+    }
 }

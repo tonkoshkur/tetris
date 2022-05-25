@@ -3,7 +3,7 @@ package ua.tonkoshkur.tetris.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FourSquareWidthBlock extends Block {
+public abstract class FourSquareWidthBlock extends Block {
 
     public FourSquareWidthBlock(int[] resIds, int squareSize) {
         super(resIds, squareSize, 4);
@@ -11,25 +11,24 @@ public class FourSquareWidthBlock extends Block {
 
     @Override
     public List<Point> getPossiblePointsForPreviousRes() {
-        int newResID = getPreviousResPosition();
-        float newX = view.getX();
-        float newY = view.getY();
-        switch (newResID) {
+        float newX = mView.getX();
+        float newY = mView.getY();
+        switch (getPreviousResPosition()) {
             case 0:
-                newX -= squareSize;
-                newY += squareSize * 2;
+                newX -= mSquareSize;
+                newY += mSquareSize * 2;
                 break;
             case 1:
-                newX += squareSize;
-                newY -= squareSize;
+                newX += mSquareSize;
+                newY -= mSquareSize;
                 break;
             case 2:
-                newX -= squareSize * 2;
-                newY += squareSize;
+                newX -= mSquareSize * 2;
+                newY += mSquareSize;
                 break;
             case 3:
-                newX += squareSize * 2;
-                newY -= squareSize * 2;
+                newX += mSquareSize * 2;
+                newY -= mSquareSize * 2;
                 break;
         }
         return getPossiblePointsFor(newX, newY);
@@ -37,25 +36,24 @@ public class FourSquareWidthBlock extends Block {
 
     @Override
     public List<Point> getPossiblePointsForNextRes() {
-        int newResID = getNextResPosition();
-        float newX = view.getX();
-        float newY = view.getY();
-        switch (newResID) {
+        float newX = mView.getX();
+        float newY = mView.getY();
+        switch (getNextResPosition()) {
             case 0:
-                newX -= squareSize * 2;
-                newY += squareSize * 2;
+                newX -= mSquareSize * 2;
+                newY += mSquareSize * 2;
                 break;
             case 1:
-                newX += squareSize;
-                newY -= squareSize * 2;
+                newX += mSquareSize;
+                newY -= mSquareSize * 2;
                 break;
             case 2:
-                newX -= squareSize;
-                newY += squareSize;
+                newX -= mSquareSize;
+                newY += mSquareSize;
                 break;
             case 3:
-                newX += squareSize * 2;
-                newY -= squareSize;
+                newX += mSquareSize * 2;
+                newY -= mSquareSize;
                 break;
         }
         return getPossiblePointsFor(newX, newY);
@@ -64,10 +62,20 @@ public class FourSquareWidthBlock extends Block {
     private List<Point> getPossiblePointsFor(float x, float y) {
         List<Point> points = new ArrayList<>();
         points.add(new Point(x, y));
-        points.add(new Point(x + squareSize, y));
-        points.add(new Point(x - squareSize, y));
-        points.add(new Point(x + (squareSize * 2), y));
-        points.add(new Point(x - (squareSize * 2), y));
+        switch (getCurrentResPosition()) {
+            case 0:
+            case 2:
+                points.add(new Point(x, y - mSquareSize));
+                points.add(new Point(x, y - (mSquareSize * 2)));
+                break;
+            case 1:
+            case 3:
+                points.add(new Point(x + mSquareSize, y));
+                points.add(new Point(x + (mSquareSize * 2), y));
+                points.add(new Point(x - mSquareSize, y));
+                points.add(new Point(x - (mSquareSize * 2), y));
+                break;
+        }
         return points;
     }
 }

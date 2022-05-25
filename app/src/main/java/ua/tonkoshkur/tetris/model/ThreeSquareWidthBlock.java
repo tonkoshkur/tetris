@@ -3,7 +3,7 @@ package ua.tonkoshkur.tetris.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ThreeSquareWidthBlock extends Block {
+public abstract class ThreeSquareWidthBlock extends Block {
 
     public ThreeSquareWidthBlock(int[] resIds, int squareSize) {
         super(resIds, squareSize, 3);
@@ -12,18 +12,18 @@ public class ThreeSquareWidthBlock extends Block {
     @Override
     public List<Point> getPossiblePointsForPreviousRes() {
         int newResID = getPreviousResPosition();
-        float newX = view.getX();
-        float newY = view.getY();
+        float newX = mView.getX();
+        float newY = mView.getY();
         switch (newResID) {
             case 0:
-                newX -= squareSize;
+                newX -= mSquareSize;
                 break;
             case 1:
-                newX += squareSize;
-                newY -= squareSize;
+                newX += mSquareSize;
+                newY -= mSquareSize;
                 break;
             case 2:
-                newY += squareSize;
+                newY += mSquareSize;
                 break;
             case 3:
                 break;
@@ -34,20 +34,20 @@ public class ThreeSquareWidthBlock extends Block {
     @Override
     public List<Point> getPossiblePointsForNextRes() {
         int newResID = getNextResPosition();
-        float newX = view.getX();
-        float newY = view.getY();
+        float newX = mView.getX();
+        float newY = mView.getY();
         switch (newResID) {
             case 0:
                 break;
             case 1:
-                newX += squareSize;
+                newX += mSquareSize;
                 break;
             case 2:
-                newX -= squareSize;
-                newY += squareSize;
+                newX -= mSquareSize;
+                newY += mSquareSize;
                 break;
             case 3:
-                newY -= squareSize;
+                newY -= mSquareSize;
                 break;
         }
         return getPossiblePointsFor(newX, newY);
@@ -56,8 +56,17 @@ public class ThreeSquareWidthBlock extends Block {
     private List<Point> getPossiblePointsFor(float x, float y) {
         List<Point> points = new ArrayList<>();
         points.add(new Point(x, y));
-        points.add(new Point(x + squareSize, y));
-        points.add(new Point(x - squareSize, y));
+        switch (getCurrentResPosition()) {
+            case 0:
+                points.add(new Point(x, y - mSquareSize));
+                break;
+            case 2:
+                points.add(new Point(x, y + mSquareSize));
+                break;
+            case 3:
+                points.add(new Point(x - mSquareSize, y));
+                break;
+        }
         return points;
     }
 }

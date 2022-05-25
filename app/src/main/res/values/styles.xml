@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MainButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Button</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="GameImageButton" parent="Widget.Material3.Button.OutlinedButton.Icon">
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="tint">?attr/colorPrimary</item>
+    </style>
+
+    <style name="SquareView">
+        <item name="android:layout_width">@dimen/default_square_size</item>
+        <item name="android:layout_height">@dimen/default_square_size</item>
+        <item name="android:background">@drawable/bg_square</item>
+    </style>
+
+    <style name="BusySquareView" parent="SquareView">
+        <item name="android:background">@drawable/bg_square_busy</item>
+    </style>
+
+    <style name="ToggleGroupButton" parent="MainButton">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="ImageToggleButton">
+        <item name="android:layout_width">@dimen/icon_btn_toggle_size</item>
+        <item name="android:layout_height">@dimen/icon_btn_toggle_size</item>
+        <item name="android:textColor">@android:color/transparent</item>
+    </style>
+
+</resources>

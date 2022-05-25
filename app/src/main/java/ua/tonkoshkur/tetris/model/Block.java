@@ -3,88 +3,106 @@ package ua.tonkoshkur.tetris.model;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 public abstract class Block {
 
     private final String TAG = Block.class.getSimpleName();
-    protected final int squareSize;
-    protected final int maxWidthInSquares;
+    protected final int mSquareSize;
+    protected final int mMaxWidthInSquares;
+    protected ViewGroup mView;
+    protected int[] mResIds;
+    private int mCurrentResPosition;
 
-    protected ViewGroup view;
-    protected int[] resIds;
-    protected int currentResPosition = 0;
+    public enum BlockShape {
+        Z,
+        L,
+        O,
+        P,
+        Q,
+        T,
+        BACK_Z
+    }
 
     public Block(int[] resIds, int squareSize, int maxWidthInSquares) {
-        this.resIds = resIds;
-        this.squareSize = squareSize;
-        this.maxWidthInSquares = maxWidthInSquares;
+        mResIds = resIds;
+        mSquareSize = squareSize;
+        mMaxWidthInSquares = maxWidthInSquares;
+        mCurrentResPosition = 0;
+    }
+
+    protected int getCurrentResPosition() {
+        return mCurrentResPosition;
+    }
+
+    protected int getPreviousResPosition() {
+        return mCurrentResPosition == 0
+                ? mResIds.length - 1
+                : mCurrentResPosition - 1;
+    }
+
+    protected int getNextResPosition() {
+        return mCurrentResPosition == mResIds.length - 1
+                ? 0
+                : mCurrentResPosition + 1;
     }
 
     public ViewGroup getView() {
-        return view;
+        return mView;
     }
 
     public void setView(View view) {
-        this.view = (ViewGroup) view;
+        mView = (ViewGroup) view;
     }
 
-    public void setView(View view, Point point) {
-        this.view = (ViewGroup) view;
+    public void setView(@NonNull View view, @NonNull Point point) {
         view.setX(point.getX());
         view.setY(point.getY());
+        mView = (ViewGroup) view;
     }
 
     public int getCurrentRes() {
-        return resIds[currentResPosition];
+        return mResIds[mCurrentResPosition];
     }
 
     public int getPreviousRes() {
-        return resIds[getPreviousResPosition()];
+        return mResIds[getPreviousResPosition()];
     }
 
     public int getNextRes() {
-        return resIds[getNextResPosition()];
+        return mResIds[getNextResPosition()];
     }
 
     public int getMaxWidthInSquares() {
-        return this.maxWidthInSquares;
-    }
-
-    public int getPreviousResPosition() {
-        return currentResPosition == 0
-                ? resIds.length - 1
-                : currentResPosition - 1;
-    }
-
-    public int getNextResPosition() {
-        return currentResPosition == resIds.length - 1
-                ? 0
-                : currentResPosition + 1;
+        return mMaxWidthInSquares;
     }
 
     public void decrementCurrentResPosition() {
-        currentResPosition = getPreviousResPosition();
+        mCurrentResPosition = getPreviousResPosition();
     }
 
     public void incrementCurrentResPosition() {
-        currentResPosition = getNextResPosition();
+        mCurrentResPosition = getNextResPosition();
     }
 
     public void moveLeft() {
-        view.setX(view.getX() - squareSize);
+        mView.setX(mView.getX() - mSquareSize);
     }
 
     public void moveRight() {
-        view.setX(view.getX() + squareSize);
+        mView.setX(mView.getX() + mSquareSize);
     }
 
     public void moveBottom() {
-        view.setY(view.getY() + squareSize);
+        mView.setY(mView.getY() + mSquareSize);
     }
 
     public abstract List<Point> getPossiblePointsForNextRes();
 
     public abstract List<Point> getPossiblePointsForPreviousRes();
+
+    public abstract BlockShape getBlockShape();
 
 }

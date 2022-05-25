@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">tetris</string>
+    <string name="app_name">Simple tetris</string>
     <string name="end_game_question">End game?</string>
     <string name="quit_question">Quit?</string>
     <string name="yes">Yes</string>
@@ -8,7 +8,11 @@
     <string name="best_score">Best score</string>
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
+    <string name="swipe">Swipe</string>
+    <string name="button">Button</string>
+    <string name="control">Control</string>
 
     <!-- Key -->
     <string name="best_score_key">best_score</string>
+    <string name="shared_prefs_key">simple_tetris_shared_prefs</string>
 </resources>

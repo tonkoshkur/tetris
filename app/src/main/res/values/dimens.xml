@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="default_square_size">20dp</dimen>
+    <dimen name="default_padding">10dp</dimen>
+    <dimen name="default_margin">20dp</dimen>
+    <dimen name="default_icon_size">36dp</dimen>
+    <dimen name="radius">5dp</dimen>
+    <dimen name="radius_width">4dp</dimen>
+
+    <dimen name="icon_btn_toggle_size">50dp</dimen>
+    <dimen name="next_block_square_size">16dp</dimen>
+
+</resources>

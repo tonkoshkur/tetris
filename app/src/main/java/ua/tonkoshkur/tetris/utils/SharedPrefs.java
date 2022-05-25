@@ -3,50 +3,44 @@ package ua.tonkoshkur.tetris.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import ua.tonkoshkur.tetris.R;
+
 public class SharedPrefs {
 
-    public static final String STORAGE_NAME = "shared_prefs";
-
-    private static SharedPreferences settings = null;
-    private static SharedPreferences.Editor editor = null;
-    private static Context context = null;
-
-    public static void init(Context cntxt) {
-        context = cntxt;
+    private static SharedPreferences getSharedPrefs(Context context) {
+        String sharedPrefsKey = context.getString(R.string.shared_prefs_key);
+        return context.getSharedPreferences(sharedPrefsKey, Context.MODE_PRIVATE);
     }
 
-    private static void init() {
-        settings = context.getSharedPreferences(STORAGE_NAME, Context.MODE_PRIVATE);
-        editor = settings.edit();
+    public static boolean getBoolean(Context context, int keyId) {
+        return getBoolean(context, keyId, false);
     }
 
-    public static void addIntProperty(String name, int value) {
-        if (settings == null) {
-            init();
-        }
-        editor.putInt(name, value);
+    public static boolean getBoolean(Context context, int keyId, boolean defaultValue) {
+        String key = context.getString(keyId);
+        return getSharedPrefs(context).getBoolean(key, defaultValue);
+    }
+
+    public static void putBoolean(Context context, int keyId, boolean value) {
+        SharedPreferences.Editor editor = getSharedPrefs(context).edit();
+        String key = context.getString(keyId);
+        editor.putBoolean(key, value);
         editor.apply();
     }
 
-    public static int getIntProperty(String name) {
-        if (settings == null) {
-            init();
-        }
-        return settings.getInt(name, 0);
+    public static int getInt(Context context, int keyId) {
+        return getInt(context, keyId, 0);
     }
 
-    public static void addBooleanProperty(String name, boolean value) {
-        if (settings == null) {
-            init();
-        }
-        editor.putBoolean(name, value);
+    public static int getInt(Context context, int keyId, int defaultValue) {
+        String key = context.getString(keyId);
+        return getSharedPrefs(context).getInt(key, defaultValue);
+    }
+
+    public static void putInt(Context context, int keyId, int value) {
+        SharedPreferences.Editor editor = getSharedPrefs(context).edit();
+        String key = context.getString(keyId);
+        editor.putInt(key, value);
         editor.apply();
-    }
-
-    public static boolean getBooleanProperty(String name) {
-        if (settings == null) {
-            init();
-        }
-        return settings.getBoolean(name, false);
     }
 }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="@dimen/default_margin"
     tools:context=".ui.fragment.StartFragment">
 
     <TextView
@@ -12,26 +13,26 @@
         android:layout_height="wrap_content"
         android:text="@string/best_score"
         android:textSize="30sp"
-        android:textColor="?attr/colorPrimary"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/best_score_value"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/best_score_value"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/best_score_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="?attr/colorPrimaryVariant"
-        android:textSize="26sp"
-        app:layout_constraintTop_toBottomOf="@id/best_score_txt"
-        app:layout_constraintBottom_toTopOf="@id/startBtn"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toTopOf="@id/start_btn"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/best_score_txt" />
 
-    <Button
-        android:id="@+id/startBtn"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/start_btn"
+        style="@style/MainButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start"
@@ -39,5 +40,42 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/control_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:labelFor="@id/control_toggle_group"
+        android:text="@string/control"
+        app:layout_constraintBottom_toTopOf="@id/control_toggle_group"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/start_btn" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/control_toggle_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/control_label"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <Button
+            android:id="@+id/swipe_control_btn"
+            style="@style/ToggleGroupButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/swipe" />
+
+        <Button
+            android:id="@+id/button_control_btn"
+            style="@style/ToggleGroupButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/button" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

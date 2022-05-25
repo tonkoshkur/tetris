@@ -2,9 +2,15 @@
     <!-- Base application theme. -->
     <style name="Theme.Tetris" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#0b5d69</item>
-        <item name="colorPrimaryVariant">#73a2ac</item>
+        <!--<item name="colorPrimary">#33333D</item>
+        <item name="colorPrimaryVariant">#424250</item>
+        <item name="colorOnPrimary">@color/white</item>-->
+        <item name="colorPrimary">#73a2ac</item>
+        <item name="colorPrimaryVariant">#0b5d69</item>
         <item name="colorOnPrimary">@color/white</item>
+        <!--<item name="colorPrimary">#0b5d69</item>
+        <item name="colorPrimaryVariant">#73a2ac</item>
+        <item name="colorOnPrimary">@color/white</item>-->
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
@@ -14,5 +20,10 @@
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <item name="android:letterSpacing">0.0892857143</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textSize">18sp</item>
     </style>
 </resources>

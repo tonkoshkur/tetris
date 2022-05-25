@@ -9,14 +9,30 @@
         android:id="@+id/startFragment"
         android:name="ua.tonkoshkur.tetris.ui.fragment.StartFragment"
         android:label="fragment_start"
-        tools:layout="@layout/fragment_start" >
+        tools:layout="@layout/fragment_start">
         <action
             android:id="@+id/action_startFragment_to_gameFragment"
-            app:destination="@id/gameFragment" />
+            app:destination="@id/gameFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_startFragment_to_gameSwipeFragment"
+            app:destination="@id/gameSwipeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
-        android:name="ua.tonkoshkur.tetris.ui.fragment.GameFragment"
+        android:name="ua.tonkoshkur.tetris.ui.fragment.GameButtonFragment"
         android:label="fragment_game"
-        tools:layout="@layout/fragment_game" />
+        tools:layout="@layout/fragment_game_button" />
+    <fragment
+        android:id="@+id/gameSwipeFragment"
+        android:name="ua.tonkoshkur.tetris.ui.fragment.GameSwipeFragment"
+        android:label="fragment_game_swipe"
+        tools:layout="@layout/fragment_game_swipe" />
 </navigation>

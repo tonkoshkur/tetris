@@ -22,7 +22,12 @@ public class BlockO extends Block {
     }
 
     private List<Point> getPossiblePoints() {
-        Point point = new Point(view.getX(), view.getY());
+        Point point = new Point(mView.getX(), mView.getY());
         return Collections.singletonList(point);
+    }
+
+    @Override
+    public BlockShape getBlockShape() {
+        return BlockShape.O;
     }
 }
