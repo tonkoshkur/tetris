@@ -1,6 +1,5 @@
 package ua.tonkoshkur.tetris.ui.fragment;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -8,7 +7,10 @@ import android.view.View;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import ua.tonkoshkur.tetris.R;
 import ua.tonkoshkur.tetris.model.Block;
@@ -77,10 +79,12 @@ public abstract class GameFragment extends BaseFragment {
     }
 
     private AlertDialog createEndGameQuestionDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setIcon(android.R.drawable.stat_sys_warning)
-                .setMessage(R.string.end_game_question)
-                .setCancelable(false)
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(
+                requireContext(),
+                com.google.android.material.R.style.MaterialAlertDialog_Material3
+        );
+        builder.setIcon(R.drawable.ic_warning_24)
+                .setTitle(R.string.end_game_question)
                 .setPositiveButton(R.string.yes, (dialog, which) -> mViewModel.endGame())
                 .setNegativeButton(R.string.no, (dialog, id) -> {
                     dialog.dismiss();
@@ -89,13 +93,24 @@ public abstract class GameFragment extends BaseFragment {
         return builder.create();
     }
 
-    protected void onFinished() {
-        mNavController.popBackStack();
+    protected void showResultDialog(String score) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(
+                requireContext(),
+                com.google.android.material.R.style.MaterialAlertDialog_Material3
+        );
+        builder.setIcon(R.drawable.ic_info_24)
+                .setTitle(getString(R.string.result, score))
+                .setCancelable(false)
+                .setPositiveButton("OK", (dialog, which) -> mNavController.popBackStack());
+        builder.create()
+                .show();
     }
 
     protected abstract void onRunning();
 
     protected abstract void onPaused();
+
+    protected abstract void onFinished();
 
     protected abstract void setupScreenSize();
 

@@ -88,6 +88,11 @@ public class GameSwipeFragment extends GameFragment {
         mBinding.pauseTglBtn.setChecked(true);
     }
 
+    @Override
+    protected void onFinished() {
+        showResultDialog(mBinding.score.getText().toString());
+    }
+
     class OnSwipeTouchListener implements View.OnTouchListener {
 
         private final float halfScreenWidth;

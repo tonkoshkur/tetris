@@ -9,6 +9,7 @@ public abstract class FourSquareWidthBlock extends Block {
         super(resIds, squareSize, 4);
     }
 
+    //TODO change switch param to getCurrentRes()
     @Override
     public List<Point> getPossiblePointsForPreviousRes() {
         float newX = mView.getX();
@@ -59,21 +60,56 @@ public abstract class FourSquareWidthBlock extends Block {
         return getPossiblePointsFor(newX, newY);
     }
 
+    /**
+     * Order is important
+     */
     private List<Point> getPossiblePointsFor(float x, float y) {
         List<Point> points = new ArrayList<>();
         points.add(new Point(x, y));
+        /*points.add(new Point(x + mSquareSize, y));
+        points.add(new Point(x - mSquareSize, y));
+        points.add(new Point(x, y - mSquareSize));
+        points.add(new Point(x - (mSquareSize * 2), y));
+        points.add(new Point(x + (mSquareSize * 2), y));
+        points.add(new Point(x, y - (mSquareSize * 2)));
+        points.add(new Point(x, y + mSquareSize));
+        points.add(new Point(x, y + (mSquareSize * 2)));*/
         switch (getCurrentResPosition()) {
             case 0:
+                points.add(new Point(x, y - mSquareSize));
+                points.add(new Point(x, y + mSquareSize));
+                points.add(new Point(x, y + (mSquareSize * 2)));
+                points.add(new Point(x + mSquareSize, y));
+                points.add(new Point(x - mSquareSize, y));
+                points.add(new Point(x + (mSquareSize * 2), y));
+                points.add(new Point(x - (mSquareSize * 2), y));
+                break;
+            case 1:
+                points.add(new Point(x + mSquareSize, y));
+                points.add(new Point(x - mSquareSize, y));
+                points.add(new Point(x - (mSquareSize * 2), y));
+                points.add(new Point(x, y + mSquareSize));
+                points.add(new Point(x, y - mSquareSize));
+                points.add(new Point(x, y + (mSquareSize * 2)));
+                points.add(new Point(x, y - (mSquareSize * 2)));
+                break;
             case 2:
                 points.add(new Point(x, y - mSquareSize));
                 points.add(new Point(x, y - (mSquareSize * 2)));
+                points.add(new Point(x, y + mSquareSize));
+                points.add(new Point(x - mSquareSize, y));
+                points.add(new Point(x + mSquareSize, y));
+                points.add(new Point(x - (mSquareSize * 2), y));
+                points.add(new Point(x + (mSquareSize * 2), y));
                 break;
-            case 1:
             case 3:
+                points.add(new Point(x - mSquareSize, y));
                 points.add(new Point(x + mSquareSize, y));
                 points.add(new Point(x + (mSquareSize * 2), y));
-                points.add(new Point(x - mSquareSize, y));
-                points.add(new Point(x - (mSquareSize * 2), y));
+                points.add(new Point(x, y - mSquareSize));
+                points.add(new Point(x, y + mSquareSize));
+                points.add(new Point(x, y - (mSquareSize * 2)));
+                points.add(new Point(x, y + (mSquareSize * 2)));
                 break;
         }
         return points;

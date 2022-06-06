@@ -6,6 +6,7 @@ import static ua.tonkoshkur.tetris.utils.Constants.SCREEN_WIDTH_MULTIPLIER;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,10 +75,16 @@ public class ScreenView extends FrameLayout {
             mViewModel.getActionLiveData().observe(getLifecycleOwner(), new ActionObserver());
             mViewModel.getRunningBlockShapeLiveData().observe(getLifecycleOwner(), blockShape -> {
                 if (blockShape == null || mViewModel.isPaused()) return;
-                mRunningBlock = BlockFactory.getBlock(blockShape, mSquareSize);
-                addBlockToScreen(mRunningBlock);
+                if (canAddNewBlock(blockShape)) {
+                    mViewModel.endGame();
+                } else {
+                    mRunningBlock = BlockFactory.getBlock(blockShape, mSquareSize);
+                    addBlockToScreen(mRunningBlock);
+                }
             });
-        } catch (Exception ignored) {}
+        } catch (ClassCastException ex) {
+            Log.e(TAG, ex.getMessage());
+        }
     }
 
     @Override
@@ -189,9 +196,12 @@ public class ScreenView extends FrameLayout {
                 && mBinding.screen.getHeight() != 0;
     }
 
-    private boolean isStoppedBlocksTooHigh() {
+    private boolean canAddNewBlock(Block.BlockShape blockShape) {
+        int blockBottomSquareY = blockShape.equals(Block.BlockShape.L)
+                ? 0
+                : mSquareSize;
         for (View square : mBusySquares) {
-            if (square.getY() < mSquareSize * 3) {
+            if (square.getY() == blockBottomSquareY) {
                 return true;
             }
         }
@@ -235,7 +245,8 @@ public class ScreenView extends FrameLayout {
         float x = maxWidthInSquares % 2 == 0
                 ? (SCREEN_WIDTH_MULTIPLIER - maxWidthInSquares) * mSquareSize / 2f
                 : SCREEN_WIDTH_MULTIPLIER * mSquareSize / 2f - mSquareSize;
-        mRunningBlock.setView(view, new Point(x, 0));
+        mRunningBlock.setView(view);
+        mRunningBlock.setViewPoint(new Point(x, 0));
     }
 
     private boolean rotateBlockIfPossible(List<Point> possiblePoints, int newRes) {
@@ -252,9 +263,8 @@ public class ScreenView extends FrameLayout {
     private void rotateBlock(ViewGroup newView, Point pointForNextRes) {
         mBinding.screen.removeView(mRunningBlock.getView());
         mBinding.screen.addView(newView);
-        mRunningBlock.setView(newView, pointForNextRes);
-        newView.setX(pointForNextRes.getX());
-        newView.setY(pointForNextRes.getY());
+        mRunningBlock.setView(newView);
+        mRunningBlock.setViewPoint(pointForNextRes);
         normalizeSquaresSize(newView);
     }
 
@@ -342,11 +352,17 @@ public class ScreenView extends FrameLayout {
                     break;
                 case ROTATE_LEFT:
                     boolean isRotatedToLeft = rotateBlockIfPossible(mRunningBlock.getPossiblePointsForPreviousRes(), mRunningBlock.getPreviousRes());
-                    if (isRotatedToLeft) mRunningBlock.decrementCurrentResPosition();
+                    if (isRotatedToLeft) {
+                        //delayNextMovementIfNeed();
+                        mRunningBlock.decrementCurrentResPosition();
+                    }
                     break;
                 case ROTATE_RIGHT:
                     boolean isRotatedToRight = rotateBlockIfPossible(mRunningBlock.getPossiblePointsForNextRes(), mRunningBlock.getNextRes());
-                    if (isRotatedToRight) mRunningBlock.incrementCurrentResPosition();
+                    if (isRotatedToRight) {
+                        //delayNextMovementIfNeed();
+                        mRunningBlock.incrementCurrentResPosition();
+                    }
                     break;
             }
         }

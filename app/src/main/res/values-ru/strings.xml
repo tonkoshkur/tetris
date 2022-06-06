@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Минималистический тетрис</string>
+    <string name="end_game_question">Закончить игру?</string>
+    <string name="quit_question">Выйти?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="start">Старт</string>
+    <string name="best_score">Лучший результат</string>
+    <string name="result">Ваш счет: %1$s</string>
+    <string name="pause">Пауза</string>
+    <string name="resume">Продолжить</string>
+    <string name="swipe">Свайп</string>
+    <string name="button">Кнопка</string>
+    <string name="control">Управление</string>
+</resources>

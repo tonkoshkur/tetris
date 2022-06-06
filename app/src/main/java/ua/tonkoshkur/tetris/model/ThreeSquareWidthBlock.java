@@ -53,18 +53,36 @@ public abstract class ThreeSquareWidthBlock extends Block {
         return getPossiblePointsFor(newX, newY);
     }
 
+    /**
+     * Order is important
+     */
     private List<Point> getPossiblePointsFor(float x, float y) {
         List<Point> points = new ArrayList<>();
         points.add(new Point(x, y));
         switch (getCurrentResPosition()) {
             case 0:
                 points.add(new Point(x, y - mSquareSize));
+                points.add(new Point(x + mSquareSize, y));
+                points.add(new Point(x - mSquareSize, y));
+                points.add(new Point(x, y + mSquareSize));
+                break;
+            case 1:
+                points.add(new Point(x + mSquareSize, y));
+                points.add(new Point(x - mSquareSize, y));
+                points.add(new Point(x, y - mSquareSize));
+                points.add(new Point(x, y + mSquareSize));
                 break;
             case 2:
                 points.add(new Point(x, y + mSquareSize));
+                points.add(new Point(x, y - mSquareSize));
+                points.add(new Point(x - mSquareSize, y));
+                points.add(new Point(x + mSquareSize, y));
                 break;
             case 3:
                 points.add(new Point(x - mSquareSize, y));
+                points.add(new Point(x + mSquareSize, y));
+                points.add(new Point(x, y - mSquareSize));
+                points.add(new Point(x, y + mSquareSize));
                 break;
         }
         return points;

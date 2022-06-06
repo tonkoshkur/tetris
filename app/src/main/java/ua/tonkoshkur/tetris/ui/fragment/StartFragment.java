@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import ua.tonkoshkur.tetris.R;
 import ua.tonkoshkur.tetris.databinding.FragmentStartBinding;
@@ -57,9 +58,12 @@ public class StartFragment extends BaseFragment {
     }
 
     private void showQuitDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setIcon(android.R.drawable.stat_sys_warning)
-                .setMessage(R.string.quit_question)
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(
+                requireContext(),
+                com.google.android.material.R.style.MaterialAlertDialog_Material3
+        );
+        builder.setIcon(R.drawable.ic_meeting_room_24)
+                .setTitle(R.string.quit_question)
                 .setCancelable(false)
                 .setPositiveButton(R.string.yes, (dialog, which) -> requireActivity().finish())
                 .setNegativeButton(R.string.no, (dialog, id) -> dialog.dismiss());

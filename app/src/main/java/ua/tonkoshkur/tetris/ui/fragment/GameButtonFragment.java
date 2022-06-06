@@ -54,8 +54,8 @@ public class GameButtonFragment extends GameFragment {
 
     @Override
     protected void onFinished() {
-        super.onFinished();
         resetMoveAsideTimer();
+        showResultDialog(mBinding.score.getText().toString());
     }
 
     @Override

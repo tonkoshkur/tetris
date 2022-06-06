@@ -1,6 +1,7 @@
 package ua.tonkoshkur.tetris.viewmodel;
 
 import static ua.tonkoshkur.tetris.utils.Constants.AFTER_LAST_TAP_MOVEMENT_DELAY;
+import static ua.tonkoshkur.tetris.utils.Constants.MAX_NUMBER_OF_MOVEMENT_DELAYS;
 import static ua.tonkoshkur.tetris.utils.Constants.MOVEMENT_PERIOD;
 import static ua.tonkoshkur.tetris.utils.Constants.QUICK_MOVEMENT_PERIOD;
 import static ua.tonkoshkur.tetris.utils.Constants.SPEED_INCREASING_STEP;
@@ -29,6 +30,7 @@ public class GameViewModel extends AndroidViewModel {
     private final MutableLiveData<Block.BlockShape> runningBlockShapeLiveData;
     private final MutableLiveData<Block.BlockShape> nextBlockShapeLiveData;
     private final MutableLiveData<Integer> scoreLiveData;
+    private int mMovementDelaysCounter;
     private long mMovementPeriod;
     private boolean mIsQuickMovingTurnedOn;
     private Timer mTimer;
@@ -115,6 +117,7 @@ public class GameViewModel extends AndroidViewModel {
 
     public void startGame() {
         if (!isStarted()) {
+            reset();
             gameStatusLiveData.setValue(GameStatus.RUNNING);
             updateRunningAndNextBlocks();
             mMovementPeriod = MOVEMENT_PERIOD;
@@ -139,12 +142,15 @@ public class GameViewModel extends AndroidViewModel {
     }
 
     public void endGame() {
+        gameStatusLiveData.setValue(GameStatus.FINISHED);
+        resetTimer();
         updateBestScore();
+    }
+
+    public void reset() {
         scoreLiveData.postValue(0);
         runningBlockShapeLiveData.setValue(null);
         nextBlockShapeLiveData.setValue(null);
-        resetTimer();
-        gameStatusLiveData.setValue(GameStatus.FINISHED);
         gameStatusLiveData.setValue(GameStatus.WAITING);
         actionLiveData.postValue(Action.HOLD);
     }
@@ -208,8 +214,15 @@ public class GameViewModel extends AndroidViewModel {
 
     public void delayNextMovement() {
         Log.e(TAG, "delayNextMovement");
-        resetTimer();
-        mTimer.schedule(new MovementTimerTask(), AFTER_LAST_TAP_MOVEMENT_DELAY, mMovementPeriod);
+        /*if (mMovementDelaysCounter <= MAX_NUMBER_OF_MOVEMENT_DELAYS) {
+            resetTimer();
+            mTimer.schedule(new MovementTimerTask(), mMovementPeriod, mMovementPeriod);
+            mMovementDelaysCounter++;
+        }*/
+    }
+
+    public void resetMovementDelaysCounter() {
+        mMovementDelaysCounter = 0;
     }
 
     private class MovementTimerTask extends TimerTask {

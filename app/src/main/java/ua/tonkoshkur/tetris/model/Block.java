@@ -3,8 +3,6 @@ package ua.tonkoshkur.tetris.model;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-
 import java.util.List;
 
 public abstract class Block {
@@ -57,10 +55,9 @@ public abstract class Block {
         mView = (ViewGroup) view;
     }
 
-    public void setView(@NonNull View view, @NonNull Point point) {
-        view.setX(point.getX());
-        view.setY(point.getY());
-        mView = (ViewGroup) view;
+    public void setViewPoint(Point point) {
+        mView.setX(point.getX());
+        mView.setY(point.getY());
     }
 
     public int getCurrentRes() {
